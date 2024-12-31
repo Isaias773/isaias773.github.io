@@ -36,6 +36,12 @@
             animation: glow 2s infinite;
         }
 
+        @media (max-width: 768px) { /* Ajustes para pantallas pequeñas */
+            h1 {
+                font-size: clamp(3rem, 6vw, 5rem); /* Incrementa los tamaños mínimos y máximos */
+            }
+        }
+
         @keyframes glow {
             0%, 100% { text-shadow: 0 0 2px #ff0000, 0 0 4px #ff0000, 0 0 6px #ff0000; }
             50% { text-shadow: 0 0 4px #ff4d4d, 0 0 8px #ff0000, 0 0 12px #ff0000; }
