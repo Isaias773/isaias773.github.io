@@ -26,20 +26,14 @@
         }
 
         h1 {
-            font-size: clamp(5rem, 8vw, 6rem); /* Ajuste dinámico para diferentes tamaños de pantalla */
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 2px #ff0000, 0 0 4px #ff0000, 0 0 6px #ff0000; 
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 4px #ff0000, 0 0 6px #ff0000;
             background: linear-gradient(45deg, #ff0000, #ff4d4d);
             color: transparent;
             -webkit-background-clip: text;
             background-clip: text;
             animation: glow 2s infinite;
-        }
-
-        @media (max-width: 768px) { /* Ajustes para pantallas pequeñas */
-            h1 {
-                font-size: clamp(3rem, 6vw, 5rem); /* Incrementa los tamaños mínimos y máximos */
-            }
         }
 
         @keyframes glow {
