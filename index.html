@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feliz Año Nuevo, Mi Amor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background: radial-gradient(circle, #ff80bf 40%, #ff66b2 60%, #000000 100%); /* Degradado de rosa claro a negro */
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 2px #ff0000, 0 0 4px #ff0000, 0 0 6px #ff0000; /* Sombra más pequeña */
+            background: linear-gradient(45deg, #ff0000, #ff4d4d); /* Degradado de rojo */
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 2px #ff0000, 0 0 4px #ff0000, 0 0 6px #ff0000; }
+            50% { text-shadow: 0 0 4px #ff4d4d, 0 0 8px #ff0000, 0 0 12px #ff0000; }
+        }
+
+        p {
+            font-size: 1.6rem;
+            max-width: 800px;
+            line-height: 1.8;
+            text-shadow: 0 0 5px #800080, 0 0 10px #800080, 0 0 20px #800080; /* Sombra de texto en morado */
+            color: #800080; /* Color del texto morado */
+            margin: 0 20px;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            z-index: 2;
+        }
+
+        .heart {
+            width: 100px;
+            height: 90px;
+            background-color: red;
+            position: absolute;
+            animation: float 3s ease-in-out infinite;
+            transform: rotate(-45deg);
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 100px;
+            height: 90px;
+            background-color: red;
+            position: absolute;
+            border-radius: 50%;
+        }
+
+        .heart:before {
+            top: -50px;
+            left: 0;
+        }
+
+        .heart:after {
+            left: 50px;
+            top: 0;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(-45deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(-45deg);
+            }
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: 0;
+            animation: rise 6s ease-in-out infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FELIZ AÑO 2025, MI AMOR JAZMÍN</h1>
+        <p> Mi amor, quiero agradecerte por cada momento que hemos compartido y por todo lo que hemos aprendido juntos. Te deseo un año lleno de bendiciones, de amor, de alegría y de momentos inolvidables. Que nuestra relación siga creciendo y fortaleciéndose, y que Dios nos guíe en cada paso que demos. Estoy agradecido de tenerte a mi lado, y con fé en Dios, sé que todo lo que venga será aún más hermoso. Te quiero mucho y te deseo lo mejor, hoy y siempre... Feliz Año Amor... Te Quiere Muchote Tu Novio...Chay ❤️</p>
+    </div>
+
+    <!-- Corazones flotantes -->
+    <div class="floating-heart" style="left: 30%; animation-delay: 0s;">
+        <div class="heart"></div>
+    </div>
+    <div class="floating-heart" style="left: 50%; animation-delay: 1s;">
+        <div class="heart"></div>
+    </div>
+    <div class="floating-heart" style="left: 70%; animation-delay: 2s;">
+        <div class="heart"></div>
+    </div>
+
+    <!-- Canvas para los fuegos artificiales -->
+    <script>
+        const PI2 = Math.PI * 2;
+        const random = (min, max) => Math.random() * (max - min + 1) + min | 0;
+        const timestamp = _ => new Date().getTime();
+
+        class Birthday {
+            constructor() {
+                this.resize();
+                this.fireworks = [];
+                this.counter = 0;
+            }
+
+            resize() {
+                this.width = canvas.width = window.innerWidth;
+                let center = this.width / 2 | 0;
+                this.spawnA = center - center / 4 | 0;
+                this.spawnB = center + center / 4 | 0;
+                this.height = canvas.height = window.innerHeight;
+                this.spawnC = this.height * .1;
+                this.spawnD = this.height * .5;
+            }
+
+            onClick(evt) {
+                let x = evt.clientX || evt.touches && evt.touches[0].pageX;
+                let y = evt.clientY || evt.touches && evt.touches[0].pageY;
+                let count = random(3, 5);
+                for (let i = 0; i < count; i++) this.fireworks.push(new Firework(
+                    random(this.spawnA, this.spawnB),
+                    this.height,
+                    x,
+                    y,
+                    random(0, 360),
+                    random(30, 110)));
+                this.counter = -1;
+            }
+
+            update(delta) {
+                ctx.clearRect(0, 0, this.width, this.height);
+                ctx.globalCompositeOperation = 'lighter';
+                for (let firework of this.fireworks) firework.update(delta);
+
+                this.counter += delta * 3;
+                if (this.counter >= 1) {
+                    this.fireworks.push(new Firework(
+                        random(this.spawnA, this.spawnB),
+                        this.height,
+                        random(0, this.width),
+                        random(this.spawnC, this.spawnD),
+                        random(0, 360),
+                        random(30, 110)));
+                    this.counter = 0;
+                }
+
+                if (this.fireworks.length > 1000) this.fireworks = this.fireworks.filter(firework => !firework.dead);
+            }
+        }
+
+        class Firework {
+            constructor(x, y, targetX, targetY, shade, offsprings) {
+                this.dead = false;
+                this.offsprings = offsprings;
+                this.x = x;
+                this.y = y;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.shade = shade;
+                this.history = [];
+            }
+
+            update(delta) {
+                if (this.dead) return;
+                let xDiff = this.targetX - this.x;
+                let yDiff = this.targetY - this.y;
+                if (Math.abs(xDiff) > 3 || Math.abs(yDiff) > 3) {
+                    this.x += xDiff * 2 * delta;
+                    this.y += yDiff * 2 * delta;
+                    this.history.push({ x: this.x, y: this.y });
+                    if (this.history.length > 20) this.history.shift();
+                } else {
+                    if (this.offsprings && !this.madeChilds) {
+                        let babies = this.offsprings / 2;
+                        for (let i = 0; i < babies; i++) {
+                            let targetX = this.x + this.offsprings * Math.cos(PI2 * i / babies) | 0;
+                            let targetY = this.y + this.offsprings * Math.sin(PI2 * i / babies) | 0;
+                            birthday.fireworks.push(new Firework(this.x, this.y, targetX, targetY, this.shade, 0));
+                        }
+                        this.madeChilds = true;
+                    }
+                    this.history.shift();
+                }
+                if (this.history.length === 0) this.dead = true;
+                else if (this.offsprings) {
+                    for (let i = 0; i < this.history.length; i++) {
+                        let point = this.history[i];
+                        ctx.save();
+                        ctx.fillStyle = `hsl(${this.shade},100%,${i}%)`;
+                        ctx.translate(point.x, point.y);
+                        ctx.scale(0.1, 0.1);
+                        this.drawHeart();
+                        ctx.restore();
+                    }
+                } else {
+                    ctx.save();
+                    ctx.fillStyle = `hsl(${this.shade},100%,50%)`;
+                    ctx.translate(this.x, this.y);
+                    ctx.scale(0.1, 0.1);
+                    this.drawHeart();
+                    ctx.restore();
+                }
+            }
+
+            drawHeart() {
+                ctx.beginPath();
+                ctx.moveTo(75, 40);
+                ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+                ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+                ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+                ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+                ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+                ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        let canvas = document.createElement('canvas');
+        canvas.id = 'birthday';
+        document.body.appendChild(canvas);
+        let ctx = canvas.getContext('2d');
+        let then = timestamp();
+        let birthday = new Birthday();
+        window.onresize = () => birthday.resize();
+        document.onclick = evt => birthday.onClick(evt);
+        document.ontouchstart = evt => birthday.onClick(evt);
+
+        (function loop() {
+            requestAnimationFrame(loop);
+            let now = timestamp();
+            let delta = now - then;
+            then = now;
+            birthday.update(delta / 1000);
+        })();
+    </script>
+</body>
+</html>
